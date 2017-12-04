@@ -127,6 +127,10 @@ considerations:
 
 see [JSON Schema folder](/schema)
 
+Contains:
+- [job](/schema/ftc_job_schema.json)
+-
+
 ```
 { job:
 }
