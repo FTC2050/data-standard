@@ -2,19 +2,20 @@
 #### Oliver Bates, Sarah Wise and Adrian Friday
 
 ## Introduction
-In this document we layout a data standard that captures the detail and complexity of the day-to-day efforts of last mile logistics, grounded bu the on-going empirical work of the EPSRC project FTC2050. The data standard looks to provide a standard way of formatting and describing data to enable data analytics and open data relating to last mile freight.
+In this document we layout a data standard that captures the detail and complexity of the day-to-day efforts of last mile logistics, grounded but the on-going empirical work of the EPSRC project FTC2050. The data standard looks to provide a standard way of formatting and describing data to enable data analytics and open data relating to last mile freight.
 
 ## Scenarios
 
 In this section, we use a series of short scenarios relating to the work undertaken in FTC2050 to help describe why particular data is interesting, and what data is import in the scope of last mile logistics.
 
-**Planning rounds in the last mile.**
-The *jobs* (represented by consignments and manifests) are scheduled for delivery. Jobs are often close in geogrpahical *location* (e.g. lat, lon, address) and can be completed on a *round*. A job,
+**Jobs and rounds in the last mile.**
+The *jobs* (represented by consignments and manifests) are scheduled for delivery. A *driver* is allocated a number of *jobs* to complete in a day. The allocation for B2B and B2C consignments (primarily deliveries) typically happens over night, with a small amount of ad hoc collections being allocated during the daily operation. *Jobs* are some times close in geographical location (e.g. lat, lon, address) and can be completed on a *round*, other times jobs are littered across the city and the driver is left to decide on the most optimal r.
+A *job*, represents work where a contract has been agreed by a particular consigner (customer) to a consignee (recipient), consignments are completed by a courier (e.g. logistics/freight company/free lance). A *round* represents a series of jobs that
 
- Rounds are allocated to a *worker* who will complete the *jobs*.
-Work/job balancing happens dependant on the number of jobs that day, the *vehicles* available and other required *assests* such as trolleys or backpacks. Vehicles and assests have limited *capacity* (e.g. fully laiden weight, internal dimensions), *range*
+Rounds are allocated to a *worker* who perform a number of *jobs* on their rounds.
+Work/job balancing happens dependant on the number of jobs that day, the *vehicles* available and other required *assests* such as trolleys or backpacks. Vehicles and assets have limited *capacity* (e.g. fully laden weight, internal dimensions), *range*
 
-**Loading vehicles.** Understand the *order* in which items are loaded into the van helps understand the round order. The *weight*, *size*, and *priority* (e.g. time prioritised) of a parcel or consignment factor into the order in which parcels are loaded into vehicles.
+**Loading vehicles.** Understand the *order* in which items are loaded into the van helps understand the round order. The *weight*, *size*, and *priority* (e.g. time prioritised) of a parcel or consignment factor into the order in which parcels are loaded into vehicles.  These parameters potential effect the ordering of a delivery round
 
 **Navigating through the city.**
 ***waypoints*** representing walking and driving in the city
@@ -29,12 +30,12 @@ Work/job balancing happens dependant on the number of jobs that day, the *vehicl
 ## Requirements
 
 - Extendability
-asdas d
+
 
 ## Data Structure and Description
 Each
 
-For where we want anonyminty to be a concern we should use GUID () to help mask the original data
+For where we want anonymity to be a concern we should use GUID () to help mask the original data
 ### jobs
 
 ```javascript
