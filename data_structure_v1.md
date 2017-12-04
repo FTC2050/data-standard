@@ -52,17 +52,19 @@ For where we want anonymity to be a concern we should use GUID () to help mask t
 job = {
         id :'0001', //unique id of the job
         round_id: '00001', //id of the round that the job is on
+        created: '', //the data/time that the job was created - helps contextualise priority, pick up, etc
         parcel_id: '', //barcode number of the item, what if there are multiple parcels?
         consigner:'Adrian Friday Inc', //the client who has placed the order
         consignee:'Julian Allen', //the customer
         address:'31 Fleet Street, London',
         postcode:'EC4Y 1AA',
-        geo_coded_address = {
+        geo_coded_address : {
                 lat:'51.513853',
                 lon:'-0.110101'
             },
-        priority = '', //optional field
+        priority : '', //lists the priority of the item, e.g. next day
         pick_up_by:'', //the time by which the item should be collected for delivery
+        puck_up_address:'',
         pick_up_time:''
         drop_off_by
 }
