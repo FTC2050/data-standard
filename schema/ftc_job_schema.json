@@ -1,0 +1,143 @@
+{
+    "$schema": "",
+    "title":"job",
+    "description": "A job or manifest item for a parcel or number of parcels to be delivered or collected",
+    "type":"object",
+    "properties":{
+        "id" :{
+            "description":"unique identifier of the job",
+            "type":"integer"
+
+        },
+        "job_type": {
+            "description":"Delivery, collection or other",
+            "type":"string"
+        },
+        "delivery_location": {
+            "description":"Delivery, collection or other",
+            "type":"geojson"
+        },
+        "delivery_address": {
+            "description":"Delivery address",
+            "type":"string"
+        },
+
+        "pickup_location": {
+            "description":"Delivery, collection or other",
+            "type":"string"
+        },
+        "pickup_address": {
+            "description":"Delivery address",
+            "type":"string"
+        },
+        "time_constraint": {
+            "description":"delivery or collection",
+            "type":"string"
+        },
+        "weight": {
+            "description":"Delivery, collection or other",
+            "type":"string"
+        },
+        "dimensions": {
+            "description":"Delivery, collection or other",
+            "type":"string"
+        },
+        "delivery_location": {
+            "description":"Delivery, collection or other",
+            "type":"string"
+        },
+        "provider": {
+            "description":"Delivery, collection or other",
+            "type":"string"
+        },
+        "customer": {
+            "description":"Delivery, collection or other",
+            "type":"string"
+        },
+        "events": {
+            "description":"Delivery, collection or other",
+            "type":"array"
+        },
+
+    },
+
+    "required": ["id","job_type","events"]
+
+
+
+}
+
+
+{
+    "$schema": "",
+    "title":"vehicle",
+    "description": "A job or manifest item for a parcel or number of parcels to be delivered or collected",
+    "type":"object",
+
+
+
+    "properties":{
+        "id" :{
+            "description":"unique identifier of the job",
+            "type":"integer"
+
+        },
+        "weight_class": {
+            "description":"Delivery, collection or other",
+            "type":"string"
+        },
+        "fuel":{
+            "description":"The id of the father of the job, e.g. if job is carried forward or created by new job",
+            "type":"string"
+        },
+        "type":{
+            "description":"The id of the father of the job, e.g. if job is carried forward or created by new job",
+            "type":"string"
+        },
+        "ownership":{
+            "description":"personal or fleet",
+            "type":"string"
+        }
+
+
+    },
+
+    "required": ["id","job_type"]
+
+
+
+}
+
+{
+    "$schema": "",
+    "title":"assest",
+    "description": "A job or manifest item for a parcel or number of parcels to be delivered or collected",
+    "type":"object",
+
+
+
+    "properties":{
+        "id" :{
+            "description":"unique identifier of the job",
+            "type":"integer"
+
+        },
+        "type": {
+            "description":"",
+            "type":"string"
+        },
+        "capacity": {
+            "description":"",
+            "type":"string"
+        },
+
+        "ownership":{
+            "description":"personal or fleet",
+            "type":"string"
+        }
+
+
+    },
+
+    "required": []
+}
