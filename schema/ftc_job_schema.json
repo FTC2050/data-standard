@@ -14,7 +14,7 @@
             "type":"string"
         },
         "delivery_location": {
-            "description":"Delivery, collection or other",
+            "description":"location where the delivery was made or is to be made?",
             "type":"geojson"
         },
         "delivery_address": {
@@ -39,19 +39,15 @@
             "type":"string"
         },
         "dimensions": {
-            "description":"Delivery, collection or other",
+            "description":"the physical dimensions of the parcel",
             "type":"string"
         },
-        "delivery_location": {
-            "description":"Delivery, collection or other",
+        "consigner": {
+            "description":"customer who ordered for the package to be delivered",
             "type":"string"
         },
-        "provider": {
-            "description":"Delivery, collection or other",
-            "type":"string"
-        },
-        "customer": {
-            "description":"Delivery, collection or other",
+        "consignee": {
+            "description":"recipient of goods",
             "type":"string"
         },
         "events": {

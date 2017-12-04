@@ -1,4 +1,4 @@
-# Developing an Last Mile Logistics Data Standard
+# Developing an FTC Data Standard
 #### Oliver Bates, Sarah Wise and Adrian Friday
 
 ## Introduction
@@ -10,13 +10,18 @@ In this section, we use a series of short scenarios relating to the work underta
 
 #### Jobs and rounds in the last mile.
 The ***jobs*** (represented by consignments and manifests) are scheduled for delivery. A ***worker*** (e.g. driver) is allocated a number of ***jobs*** to complete in a day. The allocation for B2B and B2C consignments (primarily deliveries) typically happens over night, with a small amount of ad hoc collections being allocated during the daily operation. ***Jobs*** are some times close in geographical location (e.g. lat, lon, address) and can be completed on a ***round***, other times jobs are littered across the city and the driver is left to decide on the most optimal round.
-A ***job***, represents work where a contract has been agreed by a particular consigner (customer) to a consignee (recipient), consignments are completed by a courier (e.g. logistics/freight company/free lance). A ***round*** represents a series of jobs that
+A ***job***, represents work where a contract has been agreed by a particular consigner (customer) to a consignee (recipient), consignments are completed by a courier (e.g. logistics/freight company/free lance). Each job will have a series of ***events***. ***Events*** are represented with a **timestamp** and an event **status**.
+
+
+ A ***round*** represents a series of jobs that
 
 Rounds are allocated to a ***worker*** who perform a number of ***jobs*** on their rounds.
-Work/job balancing happens dependant on the number of jobs that day, the ***vehicles*** available and other required ***assets*** such as trolleys or backpacks. Vehicles and assets have limited ***capacity*** (e.g. fully laden weight, internal dimensions), ***range***
+Work/job balancing happens dependant on the number of jobs that day, the ***vehicles*** available and other required ***assets*** such as trolleys or backpacks. Vehicles and assets have limited **capacity** (e.g. fully laden weight, internal dimensions), **range** (e.g. the maximum range the vehicle can travel).
 
 #### Loading vehicles
-Understanding the ***order*** in which items are loaded into the van helps understand the round order. The ***weight***, ***size*** (can the parcel(s) fit on the vehicle?), ***grouping*** (multiple parcels delivered to the same address) and ***priority*** (e.g. time prioritised) of a parcel or consignment factor into the order in which parcels are loaded into vehicles.  These parameters potential effect the ordering of a delivery round
+Understanding the **order** in which items are loaded into the van helps understand the round order. The **weight**, **size** (can the parcel(s) fit on the vehicle?), **grouping** (multiple parcels delivered to the same address) and **priority** (e.g. time prioritised) of a parcel or consignment factor into the order in which parcels are loaded into vehicles.
+
+These parameters potentially effect the ordering of a delivery round.
 
 #### Navigating through the city
 
@@ -65,8 +70,9 @@ job = {
         priority : '', //lists the priority of the item, e.g. next day
         pick_up_by:'', //the time by which the item should be collected for delivery
         puck_up_address:'',
-        pick_up_time:''
-        drop_off_by
+        pick_up_time:'',
+        drop_off_by:'',
+        events:{}
 }
 
 ```
@@ -96,7 +102,6 @@ worker = {
         constraints: {'Bad on Mondays', 'LGV license', 'prefers LGV', 'hates bicycles'},
         tenure: '4 Years',
         employment:{'FTC Logistics','self employed'}
-
 }
 
 ```
