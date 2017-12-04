@@ -84,6 +84,18 @@ questions:
 - what if there are multiple parcels on a job?
 - should we be using terms and colloquialism specific to the industry, or should we use more plan and accessible English?
 
+### driver
+
+```javascript
+driver = {
+        id :'0001',
+        name:'Tom Cherrett'
+        constraints: {'Bad on Mondays', 'LGV license'},
+        tenure: '4 Years'
+}
+
+```
+
 ### waypoints
 
 ```javascript
@@ -96,7 +108,7 @@ waypoint = {
 }
 
 ```
-
+- not every GPS device will capture altitude, so might need to be classed as optional
 
 ## JSON Schema
 
