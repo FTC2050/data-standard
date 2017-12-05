@@ -15,7 +15,7 @@ The ***jobs*** (represented by consignments and manifests) are scheduled for del
 A ***job***, represents work where a contract has been agreed by a particular consigner (customer) to a consignee (recipient), consignments are completed by a courier (e.g. logistics/freight company/free lance). Each job will have a series of ***events***. ***Events*** are represented with a *timestamp* and an event *status*.
 
 
- A ***round*** represents a series of jobs that
+ A ***round*** represents a series of jobs that a worker completes during the day.
 
 Rounds are allocated to a ***worker*** who perform a number of ***jobs*** on their rounds.
 Work/job balancing happens dependant on the number of jobs that day, the ***vehicles*** available and other required ***assets***, such as trolleys or backpacks. Vehicles and assets have limited *capacity* (e.g. fully laden weight, internal dimensions), *range* (e.g. the maximum range the vehicle can travel).
@@ -26,33 +26,42 @@ Understanding the *order* in which items are loaded into the van helps understan
 These parameters potentially effect the ordering of a delivery round.
 
 #### Navigating through the city
+As **workers** navigate through their **jobs**
 
-*waypoints* representing walking and driving in the city
+ **vehicles** and
+
+**waypoints** representing walking and driving in the city
+
+
 *parking location*
 
 
 ### Secondary Data
+
+- Looking up location data of the
 
 #### Navigating inside buildings.
 Our work has demonstrated how the distance and navigation inside of a building has a hold over the effectiveness of the delivery driver.
 
 To help better utilise internal navigation, *waypoint* data should also capture *elevation*, and additional information can be made available to help the worker get to the *delivery location* within a multi-story, multi-purpose building more effectively
 
-
-## Requirements
-
-- Extendability
-
 ## Challenges
 
-- Analysing and visualising large volumes of data
-- Choosing the appropriate database technology
-- Erroneous data, data handling, data cleansing
-
+- **Database** - Choosing the appropriate database technology,
+- **Structuring** - Structured in such a way where the analysis and visualisation of the (large volumes of) data is intuitive, where relationships are clear.
+    - Development of data schema and relational model (if necessary)
+- **Errors** - The design of the standard/protocol should consider erroneous data, data handling, data cleansing, providing clear descriptions and standards of formatting and guidelines for developers and users
+- **Extendability** - The standard must be able to be extended in future versions. *Hence JSON...*
+- **Transforming** multiple data sources into this standard
+- Anonymity - Raw, personally identifiable data, containing un anonymised data (e.g. real names, real clients, real customers, real
+    - Developers should maintain lookup and transformation data so that mapping of data is possible
 
 ## Data Structure and Description
 
-For where we want anonymity to be a concern we should use GUID () to help mask the original data
+For where we want anonymity to be a concern we should use UUID (Universally unique identifier) to help mask the original data.
+
+
+
 ### jobs
 
 ```javascript
@@ -69,6 +78,7 @@ job = {
                 lat:'51.513853',
                 lon:'-0.110101'
             },
+        trip_id:'',
         priority : '', //lists the priority of the item, e.g. next day
         pick_up_by:'', //the time by which the item should be collected for delivery
         puck_up_address:'',
@@ -116,9 +126,13 @@ We should consider look up tables to describe a discrete list of possible:
 
 ### waypoints
 
+- has to work for a worker and a vehicle, these must be distinguishable
+
 ```javascript
 waypoint = {
         id :'0001',
+        worker_id:'',
+        vehicle_id:'',
         trip_id: '0001'
         latitude: '0.43',
         longitude: '52.12',
@@ -129,6 +143,23 @@ waypoint = {
 considerations:
 - not every GPS device will capture altitude, so might need to be classed as optional
 - standard units for elevation/altitude - looks like a [complex discussion](https://gis.stackexchange.com/questions/75572/how-is-elevation-and-altitude-measured)
+
+### trips
+
+A trip should describe the workload
+
+```javascript
+trip = {
+        id :'0001',
+        vehicle:'',
+        assets:{},
+        worker:'',
+        start:'',
+        end:'',
+        jobs:{'j001','j002'}
+}
+
+```
 
 ## JSON Schema
 
