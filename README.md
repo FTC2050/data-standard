@@ -58,7 +58,7 @@ To help better utilise internal navigation, *waypoint* data should also capture 
 ## Data Structure and Description
 
 Her we describe the structures for:
-- [job](#/job)
+- [job](#job)
 - asd
 -
 
@@ -71,7 +71,7 @@ For where we want anonymity to be a concern we should use UUID (Universally uniq
 
 
 
-### /job
+### job
 
 A job should contain all relevant information relating to the customer's requirements, start and end locations of the parcel, physical requirements
 
@@ -115,7 +115,7 @@ questions:
 - what if there are multiple parcels on a job?
 - should we be using terms and colloquialism specific to the industry, or should we use more plan and accessible English?
 
-### /worker
+### worker
 
 ```javascript
 worker = {
@@ -137,7 +137,7 @@ We should consider look up tables to describe a discrete list of possible:
 - *vehicle_license*
 - *vehicle_access* - list of known vehicles that are accessible to workers
 
-### /waypoint
+### waypoint
 
 - has to work for a worker and a vehicle, these must be distinguishable
 
@@ -157,7 +157,7 @@ considerations:
 - not every GPS device will capture altitude, so might need to be classed as optional
 - standard units for elevation/altitude - looks like a [complex discussion](https://gis.stackexchange.com/questions/75572/how-is-elevation-and-altitude-measured)
 
-### /trip
+### trip
 
 Trips are the day long work loads made up of numerous **jobs** throughout a day. By linking corresponding location data (e.g. **waypoints**) to a specific vehicle or worker the **trip** captures the full journey of the **vehicle** (and *worker* if possible) throughout the day, helping track performance of drivers, effectiveness of parcel deliveries and the location of vehicular and other assets.
 
@@ -176,7 +176,7 @@ trip = {
 
 ```
 
-### /assets
+### assets
 
 An asset describes a tool, or non road vehicle that may be available for last mile workers who wish to move more parcels from their vehicle on the pavement/kerb side (e.g. trolley, back pack, box on wheels).
 
