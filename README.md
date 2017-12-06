@@ -58,9 +58,14 @@ To help better utilise internal navigation, *waypoint* data should also capture 
 ## Data Structure and Description
 
 Her we describe the structures for:
+
+- [asset](#asset)
 - [job](#job)
-- asd
--
+- [trip](#trip)
+- [waypoint](#waypoint)
+- [worker](#worker)
+
+[A simple database relationship diagram (without primary, foreign or compound keys)](#relations)
 
 ### Anonymity
 
@@ -176,7 +181,7 @@ trip = {
 
 ```
 
-### assets
+### asset
 
 An asset describes a tool, or non road vehicle that may be available for last mile workers who wish to move more parcels from their vehicle on the pavement/kerb side (e.g. trolley, back pack, box on wheels).
 
@@ -213,4 +218,7 @@ see:
 
 Contains:
 - [job](/schema/json/ftc_job_schema.json)
--
+
+
+# TODO
+- key structure for database relationships
