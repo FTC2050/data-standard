@@ -59,7 +59,7 @@ To help better utilise internal navigation, *waypoint* data should also capture 
 
 Her we describe the structures for:
 
-- [asset](#asset)
+- [asset](#asset) 
 - [job](#job)
 - [trip](#trip)
 - [waypoint](#waypoint)
