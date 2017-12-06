@@ -11,7 +11,10 @@ In this section, we use a series of short scenarios relating to the work underta
 In these scenarios, important ***objects*** are bold and italic, with *parameters* italicised.
 
 #### Jobs and rounds in the last mile.
-The ***jobs*** (represented by consignments and manifests) are scheduled for delivery. A ***worker*** (e.g. driver) is allocated a number of ***jobs*** to complete in a day. The allocation for B2B and B2C consignments (primarily deliveries) typically happens over night, with a small amount of ad hoc collections being allocated during the daily operation. ***Jobs*** are some times close in geographical location (e.g. lat, lon, address) and can be completed on a ***round***, other times jobs are littered across the city and the driver is left to decide on the most optimal round.
+The ***jobs*** (represented by consignments and manifests) are scheduled for delivery. A ***worker*** (e.g. driver) is allocated a number of ***jobs*** to complete in a day. The allocation for B2B and B2C consignments (primarily deliveries) typically happens over night, with a small amount of ad hoc collections being allocated during the daily operation.
+
+  **Events** capture the status of **jobs** through the system as they are processed, loaded and completed (or fail).  ***Jobs*** are some times close in geographical location (e.g. latitude, longitude, address) and can be completed on a ***round***, other times jobs are littered across the city and the driver is left to decide on the most optimal round.
+
 A ***job***, represents work where a contract has been agreed by a particular consigner (customer) to a consignee (recipient), consignments are completed by a courier (e.g. logistics/freight company/free lance). Each job will have a series of ***events***. ***Events*** are represented with a *timestamp* and an event *status*.
 
 A round (or ***trip***) represents a series of jobs that a worker completes during the day. Rounds are allocated to a ***worker*** who perform a number of ***jobs*** on their rounds.
@@ -53,13 +56,13 @@ To help better utilise internal navigation, *waypoint* data should also capture 
 - **Transforming** multiple data sources into this standard
 - **Anonymity** - Raw, personally identifiable data, containing un anonymised data (e.g. real names, real clients, real customers, real
     - Developers should maintain lookup and transformation data so that mapping of data is possible
-- **Open Data**
+- **Open Data** - Using the structure described in this document we intend on creating open data based on the datasets provided to us by our project partners.
 
 ## Data Structure and Description
 
 Her we describe the structures for:
 
-- [asset](#asset) 
+- [asset](#asset)
 - [job](#job)
 - [trip](#trip)
 - [waypoint](#waypoint)
@@ -72,8 +75,6 @@ Her we describe the structures for:
 For where we want anonymity to be a concern we should use UUID (Universally unique identifier) to help mask the original data.
 
 - Real names (e.g. consigner, consignee, company) must be redacted, kept private, and replaced with UUID to ensure privacy and anonymity. Anonymity is also important to help reduce biasing that may effect industry and workers.
-
-
 
 
 ### job
@@ -126,7 +127,7 @@ questions:
 worker = {
         id :'0001',
         name:'Tom Cherrett',
-        roles = {'van_driver','loader'}, //the worker may have multiple potential roles that they can work in within last mile logistics
+        roles: {'van_driver','loader'}, //the worker may have multiple potential roles that they can work in within last mile logistics
         vehicle_access: {'PERSONAL:001','FLEET:001'}, //
         vehicle_license:{'LGV'},//is preference a thing?
         constraints: {'Bad on Mondays', 'LGV license', 'prefers LGV', 'hates bicycles'},
@@ -172,7 +173,7 @@ We are using the term trip as it can be used more ubiquitously than terms such a
 trip = {
         id :'0001',
         vehicle:'',
-        assets:{}, // a list of the assests used on this trip
+        assets:{'0001'}, // a list of the assests used on this trip
         worker:'',
         start:'',
         end:'',
@@ -195,6 +196,26 @@ asset = {
 }
 
 ```
+
+### event
+
+An event describes an action taken against a job, for example, loading onto vehicle, attempted delivery, proof of delivery, appeared on wrong van, ... . Events are an important component as they attempt to capture some of the detail of the actions taken by workers, as well as why things happen in last mile logistics.
+
+```javascript
+event = {
+        "id" :'0001',
+        "timestamp":'2017-03-02 12:03:12'
+        "event":'Proof of delivery'
+}
+
+```
+An event may include one of the following:
+- arrived at depot
+- ready for collection
+- proof of delivery received
+- delivered to safe location
+- delivery window changed by client (??)
+
 ### Relations
 
 - tracing the children up to join in the trip
