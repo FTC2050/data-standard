@@ -14,10 +14,7 @@ In these scenarios, important ***objects*** are bold and italic, with *parameter
 The ***jobs*** (represented by consignments and manifests) are scheduled for delivery. A ***worker*** (e.g. driver) is allocated a number of ***jobs*** to complete in a day. The allocation for B2B and B2C consignments (primarily deliveries) typically happens over night, with a small amount of ad hoc collections being allocated during the daily operation. ***Jobs*** are some times close in geographical location (e.g. lat, lon, address) and can be completed on a ***round***, other times jobs are littered across the city and the driver is left to decide on the most optimal round.
 A ***job***, represents work where a contract has been agreed by a particular consigner (customer) to a consignee (recipient), consignments are completed by a courier (e.g. logistics/freight company/free lance). Each job will have a series of ***events***. ***Events*** are represented with a *timestamp* and an event *status*.
 
-
- A ***round*** represents a series of jobs that a worker completes during the day.
-
-Rounds are allocated to a ***worker*** who perform a number of ***jobs*** on their rounds.
+A round (or ***trip***) represents a series of jobs that a worker completes during the day. Rounds are allocated to a ***worker*** who perform a number of ***jobs*** on their rounds.
 Work/job balancing happens dependant on the number of jobs that day, the ***vehicles*** available and other required ***assets***, such as trolleys or backpacks. Vehicles and assets have limited *capacity* (e.g. fully laden weight, internal dimensions), *range* (e.g. the maximum range the vehicle can travel).
 
 #### Loading vehicles
@@ -45,30 +42,46 @@ Our work has demonstrated how the distance and navigation inside of a building h
 
 To help better utilise internal navigation, *waypoint* data should also capture *elevation*, and additional information can be made available to help the worker get to the *delivery location* within a multi-story, multi-purpose building more effectively
 
-## Challenges
+## Challenges and Aims
 
-- **Database** - Choosing the appropriate database technology,
+- **Database** - Choosing the appropriate database technology - e.g. mysql vs. postgresql vs mongodb, and understanding where these databases should
+- **Consistency** and documentation
 - **Structuring** - Structured in such a way where the analysis and visualisation of the (large volumes of) data is intuitive, where relationships are clear.
     - Development of data schema and relational model (if necessary)
 - **Errors** - The design of the standard/protocol should consider erroneous data, data handling, data cleansing, providing clear descriptions and standards of formatting and guidelines for developers and users
 - **Extendability** - The standard must be able to be extended in future versions. *Hence JSON...*
 - **Transforming** multiple data sources into this standard
-- Anonymity - Raw, personally identifiable data, containing un anonymised data (e.g. real names, real clients, real customers, real
+- **Anonymity** - Raw, personally identifiable data, containing un anonymised data (e.g. real names, real clients, real customers, real
     - Developers should maintain lookup and transformation data so that mapping of data is possible
+- **Open Data**
 
 ## Data Structure and Description
 
+Her we describe the structures for:
+- [job](#/job)
+- asd
+-
+
+### Anonymity
+
 For where we want anonymity to be a concern we should use UUID (Universally unique identifier) to help mask the original data.
 
+- Real names (e.g. consigner, consignee, company) must be redacted, kept private, and replaced with UUID to ensure privacy and anonymity. Anonymity is also important to help reduce biasing that may effect industry and workers.
 
 
-### jobs
+
+
+### /job
+
+A job should contain all relevant information relating to the customer's requirements, start and end locations of the parcel, physical requirements
 
 ```javascript
 job = {
         id :'0001', //unique id of the job
         round_id: '00001', //id of the round that the job is on
         created: '', //the data/time that the job was created - helps contextualise priority, pick up, etc
+        courier_id:'', //the original courier the contract/job has been made with
+        depot_id:'', //the depot where the parcel starts or ends?
         parcel_id: '', //barcode number of the item, what if there are multiple parcels?
         consigner:'Adrian Friday Inc', //the client who has placed the order
         consignee:'Julian Allen', //the customer
@@ -84,7 +97,7 @@ job = {
         puck_up_address:'',
         pick_up_time:'',
         drop_off_by:'',
-        events:{}
+        events:{} //not sure if this is the correct way to record this?
 }
 
 ```
@@ -102,7 +115,7 @@ questions:
 - what if there are multiple parcels on a job?
 - should we be using terms and colloquialism specific to the industry, or should we use more plan and accessible English?
 
-### workers
+### /worker
 
 ```javascript
 worker = {
@@ -124,14 +137,14 @@ We should consider look up tables to describe a discrete list of possible:
 - *vehicle_license*
 - *vehicle_access* - list of known vehicles that are accessible to workers
 
-### waypoints
+### /waypoint
 
 - has to work for a worker and a vehicle, these must be distinguishable
 
 ```javascript
 waypoint = {
         id :'0001',
-        worker_id:'',
+        worker_id:'', //should this be merged with vehicle_id??, and then the UUID for worker and vehicle containing a prefix
         vehicle_id:'',
         trip_id: '0001'
         latitude: '0.43',
@@ -144,15 +157,17 @@ considerations:
 - not every GPS device will capture altitude, so might need to be classed as optional
 - standard units for elevation/altitude - looks like a [complex discussion](https://gis.stackexchange.com/questions/75572/how-is-elevation-and-altitude-measured)
 
-### trips
+### /trip
 
-A trip should describe the workload
+Trips are the day long work loads made up of numerous **jobs** throughout a day. By linking corresponding location data (e.g. **waypoints**) to a specific vehicle or worker the **trip** captures the full journey of the **vehicle** (and *worker* if possible) throughout the day, helping track performance of drivers, effectiveness of parcel deliveries and the location of vehicular and other assets.
+
+We are using the term trip as it can be used more ubiquitously than terms such as "round" or "journey" that suggest more rigid structures and are more tightly defined in last mile logistics.
 
 ```javascript
 trip = {
         id :'0001',
         vehicle:'',
-        assets:{},
+        assets:{}, // a list of the assests used on this trip
         worker:'',
         start:'',
         end:'',
@@ -161,16 +176,41 @@ trip = {
 
 ```
 
-## JSON Schema
+### /assets
 
-see [JSON Schema folder](/schema)
+An asset describes a tool, or non road vehicle that may be available for last mile workers who wish to move more parcels from their vehicle on the pavement/kerb side (e.g. trolley, back pack, box on wheels).
 
-Contains:
-- [job](/schema/ftc_job_schema.json)
--
-
-```
-{ job:
+```javascript
+asset = {
+        id :'0001',
+        barcode:'', //for scanning when taken out on a round
+        kind:'',
+        capacity:'',
+        current_location:'' //where the asset is currently, which depot, or whether out on a round
 }
 
 ```
+### Relations
+
+- tracing the children up to join in the trip
+
+trip (*1*) <-> (*many*) job
+
+trip (*1*) <-> (*1*) worker
+
+trip (*1*) <-> (*many*) waypoint
+
+trip (*1*) <-> (*many*) asset
+
+
+## Schema
+
+Whilst I've used JSON to help draw the standard for each object in our data standard, the
+
+see:
+- [JSON Schema folder](/schema/json)
+- [postgres schema](/schema/postgres)
+
+Contains:
+- [job](/schema/json/ftc_job_schema.json)
+-
