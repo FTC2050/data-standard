@@ -26,14 +26,7 @@ Understanding the *order* in which items are loaded into the van helps understan
 These parameters potentially effect the ordering of a delivery round.
 
 #### Navigating through the city
-As **workers** navigate through their **jobs**
-
- **vehicles** and
-
-**waypoints** representing walking and driving in the city
-
-
-*parking location*
+As **workers** navigate go about their **trips** through the city, completing their allocated  **jobs** using **vehicles** their location in space and time can help understand optimal routes through the city, how to navigate on foot, the relationship between driver effectiveness and congestion, optimal spotting and parking points, and the temporal and spatial overlap of jobs and trips. Driver and vehicle navigation can be represented as a series of geographical **waypoints**.
 
 
 ### Secondary Data
@@ -56,6 +49,7 @@ To help better utilise internal navigation, *waypoint* data should also capture 
 - **Transforming** multiple data sources into this standard
 - **Anonymity** - Raw, personally identifiable data, containing un anonymised data (e.g. real names, real clients, real customers, real
     - Developers should maintain lookup and transformation data so that mapping of data is possible
+    - Hashing these strings is one option
 - **Open Data** - Using the structure described in this document we intend on creating open data based on the datasets provided to us by our project partners.
 
 ## Data Structure and Description
@@ -83,39 +77,36 @@ A job should contain all relevant information relating to the customer's require
 
 ```javascript
 job = {
-        id :'0001', //unique id of the job
-        round_id: '00001', //id of the round that the job is on
-        created: '', //the data/time that the job was created - helps contextualise priority, pick up, etc
-        courier_id:'', //the original courier the contract/job has been made with
-        depot_id:'', //the depot where the parcel starts or ends?
-        parcel_id: '', //barcode number of the item, what if there are multiple parcels?
-        consigner:'Adrian Friday Inc', //the client who has placed the order
-        consignee:'Julian Allen', //the customer
-        address:'31 Fleet Street, London',
-        postcode:'EC4Y 1AA',
-        geo_coded_address : {
-                lat:'51.513853',
-                lon:'-0.110101'
-            },
-        trip_id:'',
-        priority : '', //lists the priority of the item, e.g. next day
-        pick_up_by:'', //the time by which the item should be collected for delivery
-        puck_up_address:'',
-        pick_up_time:'',
-        drop_off_by:'',
-        events:{} //not sure if this is the correct way to record this?
+    "uuid" :'0001', //unique id of the job
+    "created": "", //the data/time that the job was created - helps contextualise priority, pick up, etc
+    "courier_id":"", //the original courier the contract/job has been made with
+    "depot_id":'', //the depot where the parcel starts or ends?
+    "parcel_id": '', //barcode number of the item, what if there are multiple parcels?
+    "consigner":'Adrian Friday Inc', //the client who has placed the order
+    "consignee":'Julian Allen', //the customer
+    "address":'31 Fleet Street, London',
+    "postcode":'EC4Y 1AA',
+    "geo_coded_address" : {
+            "lat":'51.513853',
+            "lon":'-0.110101'
+        },
+    "priority": '', //lists the priority of the item, e.g. next day
+    "pick_up_by":'', //the time by which the item should be collected for delivery
+    "pick_up_address":"",
+    "pick_up_time":"",
+    "drop_off_by":"",
+    "drop_off_time":"",//feels like an event
+    "events":[("10:34:33","loaded on van"),
+        ("12:43:23", "deposited in secure bin")]
+         //either can be tuples (like in e.g.),
+        // or UUID of events in event table
 }
 
 ```
 mandatory fields:
-- id
-- parcel_id
-- consigner
-- consignee
-- address
-- postcode
+- id, parcel_id, consigner, consignee, address, postcode
 
-optional fields:
+optional fields: ??
 
 questions:
 - what if there are multiple parcels on a job?
@@ -125,16 +116,17 @@ questions:
 
 ```javascript
 worker = {
-        id :'0001',
-        name:'Tom Cherrett',
-        roles: {'van_driver','loader'}, //the worker may have multiple potential roles that they can work in within last mile logistics
-        vehicle_access: {'PERSONAL:001','FLEET:001'}, //
-        vehicle_license:{'LGV'},//is preference a thing?
-        constraints: {'Bad on Mondays', 'LGV license', 'prefers LGV', 'hates bicycles'},
-        tenure: '4 Years',
-        employment:{'FTC Logistics','self employed'}
+    "uuid" :'0001',
+    "name":'Tom Cherrett',
+    "roles": {'van_driver','loader'}, //the worker
+    //may have multiple potential roles that
+    //they can work in within last mile logistics
+    vehicle_access: {'PERSONAL:001','FLEET:001'}, //
+    vehicle_license:{'LGV'},//is preference a thing?
+    constraints: {'Bad on Mondays', 'LGV license', 'prefers LGV', 'hates bicycles'},
+    tenure: '4 Years',
+    employment:{'FTC Logistics','self employed'}
 }
-
 ```
 
 We should consider look up tables to describe a discrete list of possible:
@@ -149,15 +141,18 @@ We should consider look up tables to describe a discrete list of possible:
 
 ```javascript
 waypoint = {
-        id :'0001',
-        worker_id:'', //should this be merged with vehicle_id??, and then the UUID for worker and vehicle containing a prefix
-        vehicle_id:'',
-        trip_id: '0001'
-        latitude: '0.43',
-        longitude: '52.12',
-        elevation: '324.3' // or altitude
+    "uuid" :'0001',
+    "worker_id":"", //should this be merged with
+    //vehicle_id??, and then the UUID for worker
+    //and vehicle containing a prefix
+    "vehicle_id":"",
+    "trip_id": '0001'
+    "latitude": '0.43',
+    "longitude": '52.12',
+    "elevation": '324.3' // or altitude
+    "current_job" = "" //uuid of job that is current
+    "job_count" = "" //sequence number of current job
 }
-
 ```
 considerations:
 - not every GPS device will capture altitude, so might need to be classed as optional
@@ -171,15 +166,14 @@ We are using the term trip as it can be used more ubiquitously than terms such a
 
 ```javascript
 trip = {
-        id :'0001',
-        vehicle:'',
-        assets:{'0001'}, // a list of the assests used on this trip
-        worker:'',
-        start:'',
-        end:'',
-        jobs:{'j001','j002'}
+    uuid :'0001',
+    vehicle:'',
+    assets:{'0001'}, // a list of the assests used on this trip
+    worker:'',
+    start:'',
+    end:'',
+    jobs:{'j001','j002'}
 }
-
 ```
 
 ### asset
@@ -188,24 +182,46 @@ An asset describes a tool, or non road vehicle that may be available for last mi
 
 ```javascript
 asset = {
-        id :'0001',
-        barcode:'', //for scanning when taken out on a round
-        kind:'',
-        capacity:'',
-        current_location:'' //where the asset is currently, which depot, or whether out on a round
+    "uuid" :"0001",
+    "barcode":"0119681320351", //for scanning
+    // when taken out on a round
+    "kind":"",
+    "capacity":"",
+    "home_depot":"",
+    "current_location":"" //where the asset is
+    // currently, which depot, or whether out
+    // on a round
 }
+```
 
+### depot
+
+An asset describes a tool, or non road vehicle that may be available for last mile workers who wish to move more parcels from their vehicle on the pavement/kerb side (e.g. trolley, back pack, box on wheels).
+
+```javascript
+depot = {
+    "uuid" :"0001",
+    "address":"1 Depot Street", //for scanning when taken out on a round
+    "owner":"FTC Logistics",
+    "capacity":{"vans":12, "cargo_bike":50,
+        "parcel_storage":"10000m2"}
+}
 ```
 
 ### event
 
-An event describes an action taken against a job, for example, loading onto vehicle, attempted delivery, proof of delivery, appeared on wrong van, ... . Events are an important component as they attempt to capture some of the detail of the actions taken by workers, as well as why things happen in last mile logistics.
+An event describes an action taken against a job, for example, loading onto vehicle, attempted delivery, proof of delivery, appeared on wrong van, ... . Events are an important component as they attempt to capture some of the detail of the actions taken by workers, as well as why things happen in last mile logistics. This object is useful in relational database, where as in NoSQL databases you may want to have the events as a tuple in the job.
 
 ```javascript
 event = {
-        "id" :'0001',
-        "timestamp":'2017-03-02 12:03:12'
-        "event":'Proof of delivery'
+        "id":"0001",
+        "timestamp":"2017-03-02 12:03:12",
+        "event_name":"Proof of delivery"
+         /*relational db may want to use table
+         with keys for each event and another
+          table with unique event names
+          using e_id in event object, relating
+           to an event description table*/
 }
 
 ```
@@ -233,13 +249,17 @@ trip (*1*) <-> (*many*) asset
 
 Whilst I've used JSON to help draw the standard for each object in our data standard, the
 
+
+JSON Schema:
+- [job](/schema/json/ftc_job_schema.json)
+
+
 see:
 - [JSON Schema folder](/schema/json)
 - [postgres schema](/schema/postgres)
 
-Contains:
-- [job](/schema/json/ftc_job_schema.json)
-
 
 # TODO
 - key structure for database relationships
+- identifying key fields and parameters that need to be anonymised and removed to enable **Open Data**
+- identify mandatory and optional fields (e.g. NULL fields)
