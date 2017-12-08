@@ -195,7 +195,7 @@ asset = {
 }
 ```
 ### vehicle
-
+Description of the individual vehicles that make up the fleet.
 
 ```javascript
 vehicle = {
