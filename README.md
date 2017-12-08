@@ -61,6 +61,7 @@ Her we describe the structures for:
 - [trip](#trip)
 - [waypoint](#waypoint)
 - [worker](#worker)
+- [vehicle](#vehicle)
 
 [A simple database relationship diagram (without primary, foreign or compound keys)](#relations)
 
@@ -77,27 +78,27 @@ A job should contain all relevant information relating to the customer's require
 
 ```javascript
 job = {
-    "uuid" :'0001', //unique id of the job
+    "uuid" :"0001", //unique id of the job
     "created": "", //the data/time that the job was created - helps contextualise priority, pick up, etc
     "courier_id":"", //the original courier the contract/job has been made with
-    "depot_id":'', //the depot where the parcel starts or ends?
-    "parcel_id": '', //barcode number of the item, what if there are multiple parcels?
-    "consigner":'Adrian Friday Inc', //the client who has placed the order
-    "consignee":'Julian Allen', //the customer
-    "address":'31 Fleet Street, London',
-    "postcode":'EC4Y 1AA',
+    "depot_id":"", //the depot where the parcel starts or ends?
+    "parcel_id": "", //barcode number of the item, what if there are multiple parcels?
+    "consigner":"Adrian Friday Inc", //the client who has placed the order
+    "consignee":"Julian Allen", //the customer
+    "address":"31 Fleet Street, London",
+    "postcode":"EC4Y 1AA",
     "geo_coded_address" : {
-            "lat":'51.513853',
-            "lon":'-0.110101'
+            "latitude":"51.513853",
+            "longitude":"-0.110101"
         },
-    "priority": '', //lists the priority of the item, e.g. next day
-    "pick_up_by":'', //the time by which the item should be collected for delivery
+    "priority": "", //lists the priority of the item, e.g. next day
+    "pick_up_by":"", //the time by which the item should be collected for delivery
     "pick_up_address":"",
     "pick_up_time":"",
     "drop_off_by":"",
     "drop_off_time":"",//feels like an event
-    "events":[("10:34:33","loaded on van"),
-        ("12:43:23", "deposited in secure bin")]
+    "events":{"10:34:33":"loaded on van"),
+        "12:43:23":"deposited in secure bin"}
          //either can be tuples (like in e.g.),
         // or UUID of events in event table
 }
@@ -116,16 +117,16 @@ questions:
 
 ```javascript
 worker = {
-    "uuid" :'0001',
-    "name":'Tom Cherrett',
-    "roles": {'van_driver','loader'}, //the worker
+    "uuid" :"0001",
+    "name":"Tom Cherrett",
+    "roles": {"van_driver","loader","sorter"}, //the worker
     //may have multiple potential roles that
     //they can work in within last mile logistics
-    vehicle_access: {'PERSONAL:001','FLEET:001'}, //
-    vehicle_license:{'LGV'},//is preference a thing?
-    constraints: {'Bad on Mondays', 'LGV license', 'prefers LGV', 'hates bicycles'},
-    tenure: '4 Years',
-    employment:{'FTC Logistics','self employed'}
+    "vehicle_access": {"PERSONAL_VAN","FLEET:001"}, //
+    "vehicle_license":{"LGV"},//is preference a thing?
+    "constraints": {'Bad on Mondays', 'LGV license', 'prefers LGV', 'hates bicycles'},
+    "tenure": '4 Years', //some description of employment history/tenure
+    "employment":{'FTC Logistics','self employed'}
 }
 ```
 
@@ -193,7 +194,18 @@ asset = {
     // on a round
 }
 ```
+### vehicle
 
+
+```javascript
+vehicle = {
+    "uuid" :"0001",
+    "vehicle_name":"1 Depot Street", //for scanning when taken out on a round
+    "vehicle_type":"FTC Logistics",
+    "capacity":{"weight":"500 kg",
+        "parcel_storage":"10m2"}
+}
+```
 ### depot
 
 An asset describes a tool, or non road vehicle that may be available for last mile workers who wish to move more parcels from their vehicle on the pavement/kerb side (e.g. trolley, back pack, box on wheels).
@@ -238,6 +250,8 @@ An event may include one of the following:
 
 trip (*1*) <-> (*many*) job
 
+job (*1*) <-> (*many*) event
+
 trip (*1*) <-> (*1*) worker
 
 trip (*1*) <-> (*many*) waypoint
@@ -263,3 +277,4 @@ see:
 - key structure for database relationships
 - identifying key fields and parameters that need to be anonymised and removed to enable **Open Data**
 - identify mandatory and optional fields (e.g. NULL fields)
+- think about stream lining the data structures to support dashboards, or at least build an api that pulls data out in the format described in this document
