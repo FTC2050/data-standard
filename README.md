@@ -122,7 +122,7 @@ worker = {
     "roles": {"van_driver","loader","sorter"}, //the worker
     //may have multiple potential roles that
     //they can work in within last mile logistics
-    "vehicle_access": {"PERSONAL_VAN","FLEET:001"}, //
+    "personal_vehicle": {"PERSONAL_VAN:001"}, //
     "vehicle_license":{"LGV"},//is preference a thing?
     "constraints": {'Bad on Mondays', 'LGV license', 'prefers LGV', 'hates bicycles'},
     "tenure": '4 Years', //some description of employment history/tenure
@@ -133,7 +133,7 @@ worker = {
 We should consider look up tables to describe a discrete list of possible:
 - *constraints*
 - *roles*
-- *vehicle_license*
+- *vehicle_license* - what are the licenses that drivers need/have that allows for the use of different vehicles
 - *vehicle_access* - list of known vehicles that are accessible to workers
 
 ### waypoint
@@ -151,13 +151,14 @@ waypoint = {
     "latitude": '0.43',
     "longitude": '52.12',
     "elevation": '324.3' // or altitude
-    "current_job" = "" //uuid of job that is current
-    "job_count" = "" //sequence number of current job
+    "current_job" = "001" //uuid of job that is current
+    "job_count" = "1" //sequence number of current job
 }
 ```
 considerations:
 - not every GPS device will capture altitude, so might need to be classed as optional
 - standard units for elevation/altitude - looks like a [complex discussion](https://gis.stackexchange.com/questions/75572/how-is-elevation-and-altitude-measured)
+- may want job_count
 
 ### trip
 
@@ -188,6 +189,7 @@ asset = {
     // when taken out on a round
     "kind":"",
     "capacity":"",
+    "size":"1m2", // need to have some indicator of space taken up by asset, as thus effects no. parcels able to load.
     "home_depot":"",
     "current_location":"" //where the asset is
     // currently, which depot, or whether out
