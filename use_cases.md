@@ -1,4 +1,4 @@
-# Use Cases for Collaborative Last Mile Logistics Datastore
+# Drafting use Cases for Collaborative Last Mile Logistics Datastore
 
 ## Inputting data
 
@@ -16,9 +16,14 @@ Two options:
 
 ## Getting the Data out
 
+- fast
+- detailed
 
-## Data dashboard
-## Agent based modelling
+## Data dashboard and Agent based modelling
+
+- processing data in the dashboard not the data hub
+- 
+
 ## API access for data analysis
     - grab all the waypoints
     - grabbing all the trips
