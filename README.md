@@ -29,9 +29,11 @@ Further information available:
 
 ## Data Structure and Description
 
-Her we describe the structures for:
+Here we describe the structures for:
 
 - [asset](#asset)
+- [depot](#depot)
+- [event](#event)
 - [job](#job)
 - [trip](#trip)
 - [waypoint](#waypoint)
