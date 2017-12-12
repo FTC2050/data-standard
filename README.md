@@ -5,8 +5,13 @@
 In this document we layout a data standard that captures the detail and complexity of the day-to-day efforts of last mile logistics, grounded but the on-going empirical work of the EPSRC project FTC2050. The data standard looks to provide a standard way of formatting and describing data to enable data analytics and open data relating to last mile freight.
 
 Further information available:
-- [Operational Scenarios](scenarios.md)
+- [Operational Scenarios of last mile logistics](scenarios.md)
+- [User Stories](user_stories/user_stories.md)
 - [Use Cases](use_cases.md)
+    - 1. Upload and Data Ingress
+        - [1a Carrier Upload](use_cases/1a-carrier_upload.md)
+        - [2a. Data Extraction](use_case/2a-data_extraction)
+
 
 ## Challenges and Aims
 
