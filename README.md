@@ -9,7 +9,7 @@ Further information available:
 - [Draft User Stories](user_stories/user_stories_user.md). Full version is being developed in google drive.
 - [Use Cases](use_cases.md)
     - 1. Upload and Data Ingress
-        - [1a Carrier Upload](use_cases/1a-carrier_upload.md
+        - [1a Carrier Upload](use_cases/1a-carrier_upload.md)
     - 2. Data Extraction
         - [2a. Data Extraction](use_case/2a-data_extraction)
     - 3. Dashboard
