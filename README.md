@@ -76,7 +76,7 @@ job = {
     "pick_up_time":"",
     "drop_off_by":"",
     "drop_off_time":"",//feels like an event
-    "events":{"10:34:33":"loaded on van"),
+    "events":{"10:34:33":"loaded on van",
         "12:43:23":"deposited in secure bin"}
          //either can be tuples (like in e.g.),
         // or UUID of events in event table
